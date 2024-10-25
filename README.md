@@ -53,6 +53,17 @@ GOOGLE_API_KEY=...
 MISTRAL_API_KEY=...
 ```
 
+(Optional) Modify aws_credentials.sh and run script to set AWS environment variables.
+Example for Python venv:
+
+```bash
+cat << 'EOF' >> .venv/bin/activate
+export AWS_ACCESS_KEY_ID="your_access_key"
+export AWS_SECRET_ACCESS_KEY="your_secret_key"
+export AWS_REGION_NAME="your_region"
+EOF
+```
+
 ## Run
 
 Run a tool-calling agent on the τ-retail environment:
@@ -77,6 +88,13 @@ By default, we use `gpt-4o` as the user simulator with strategy `llm`. You can u
 
 ```bash
 python run.py --agent-strategy tool-calling --env retail --model gpt-4o --model-provider openai --max-concurrency 10 --user-model claude-3-5-sonnet-20240620 --user-model-provider anthropic --user-strategy llm
+```
+
+To run with Amazon Bedrock, add prefix bedrock/ in front of Bedrock model IDs for `--model` and , `--user-model`and use bedrock for `--user-model-provider`. 
+For example:
+
+```bash
+python run.py --agent-strategy tool-calling --env retail --model bedrock/anthropic.claude-3-5-sonnet-20240620-v1:0 --model-provider bedrock --user-model bedrock/anthropic.claude-3-5-sonnet-20240620-v1:0 --user-model-provider bedrock --user-strategy llm --max-concurrency 10 --task-ids 2 4 6
 ```
 
 Other strategies:
